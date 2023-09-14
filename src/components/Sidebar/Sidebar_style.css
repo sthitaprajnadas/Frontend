@@ -1,0 +1,112 @@
+.sidebar {
+    width: 260px;
+    background-color: #ffffff;
+    height: 170vh;
+    padding: 0 15px 15px 2px;
+    position: relative;
+    border-right: 1px solid grey;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    position: absolute;
+    top: 90px;
+    left: 30px;
+    width: 230px;
+}
+
+.sidebar li {
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.sidebar li.active {
+    background-color: #d7e8f1;
+}
+
+.sidebar .logo1 {
+    width: 260px;
+    height: 111px;
+    display: block;
+    margin: 0;
+    position: relative;
+    left: 15px;
+}
+
+.sidebar .handle-icon {
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    top: 30px;
+    left: 25px;
+}
+
+.sidebar .small-logo {
+    width: 39px;
+    height: 46px;
+    display: none;
+    position: absolute;
+    top: 2px;
+    left: 5px;
+}
+
+.sidebar .toggle-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 5px;
+    top: 10px;
+}
+
+.sidebar.collapsed .logo1 {
+    display: none;
+}
+
+.sidebar.collapsed .small-logo {
+    display: block;
+}
+
+.sidebar.collapsed {
+    width: 58px;
+    overflow: hidden;
+}
+
+.sidebar .toggle-button:focus {
+    outline: none;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+}
+
+/* Applying dark theme styles to the sidebar */
+.sidebar.dark-theme {
+    background-color: #2b2c3f;
+    border-color: transparent;
+}
+
+.sidebar.dark-theme ul li {
+    color: white;
+}
+
+.sidebar.dark-theme .active {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.body.dark-theme {
+    background-color: #2b2c3f;
+}
+
+
+.sidebar.dark-theme .logo1 {
+    width: 260px;
+    height: 58px;
+    margin-top: 20px;
+}

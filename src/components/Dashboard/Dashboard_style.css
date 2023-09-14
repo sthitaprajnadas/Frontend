@@ -1,0 +1,112 @@
+.main-content {
+    flex: 1;
+    padding: 15px !important;
+    
+    
+}
+
+.chart {
+    background-color: #ddd;
+    margin-bottom: 15px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer {
+    width: 100%;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+
+}
+
+
+/* ... other styles ... */
+
+
+/* Responsive styling for the charts */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 5px;
+    }
+
+    .chart {
+        height: 150px; 
+    }
+}
+
+
+.user-info {
+    font-family: 'Roboto', sans-serif; /* Ensure this font is imported in your project */
+    font-size: 16px;
+    color: #32475C;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    line-height: 1px;
+}
+
+.icons-area {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* space between icons */
+    margin-right: 20px;
+}
+
+.icons-area img {
+    width: 40px; /* or any desired size */
+    height: 40px; /* or any desired size */
+}
+
+
+.main-content.dark-theme {
+    background-color: #232323;
+  }
+  
+  /* Assuming you want all grid items to have the specified color when in dark mode */
+  /*
+  .main-content.dark-theme .grid-item {
+    background-color: #2b2c3f;
+  }
+  */
+  .dark-theme .dark-theme-paper {
+    background-color: #2b2c3f !important;
+}
+
+.dark-theme .dark-theme-paper {
+    border-color: #444561 !important; /* This is assuming the Grid component has a border applied. The !important might be necessary to override MUI's styles. */
+}
+
+.dark-theme .dark-theme-paper {
+    color: #ffffff; /* Setting default text color to white */
+    
+}
+
+.dark-theme .dark-theme-paper h1,
+.dark-theme .dark-theme-paperh2,
+.dark-theme .dark-theme-paper h3,
+.dark-theme .dark-theme-paperh4,
+.dark-theme .dark-theme-paperh5,
+.dark-theme .dark-theme-paper h6,
+.dark-theme .dark-theme-paper strong,
+.dark-theme .dark-theme-paper p {
+    color: #ffffff; /* Inherits the color from the parent, i.e., .main-content.dark-theme */
+}
+
+
+  
+  .theme-toggle-button {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      padding: 5px;
+      margin: 10px;
+  }
+  
+  .theme-toggle-button img {
+      width: 24px;
+      height: 24px;
+  }
+

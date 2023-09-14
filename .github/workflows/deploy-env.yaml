@@ -7,6 +7,14 @@ on:
     branches: [ main,dev ]
   workflow_dispatch:
 
+env:
+  NODE_VERSION: '16.x'
+  NODE_APP: 'proto1-frontend'                # set this to the node version to use
+
+permissions:
+  contents: write
+
+
 jobs:
   Build:
     runs-on: ubuntu-latest

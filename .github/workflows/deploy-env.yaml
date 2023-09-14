@@ -48,12 +48,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: 
       name: dev
-      #url: 'http://www.myapp.com'
-      host: ${{ secrets.DEV_SSH_HOST }}
-      username: ${{ secrets.DEV_SSH_USER }}
-      key: ${{ secrets.DEV_SSH_KEY }}
-      port: ${{ secrets.DEV_SSH_PORT }}
-      path: ${{ secrets.DEV_SERVER_PATH }}
       #url: 'http://dev.myapp.com'
     steps:
     - name: Set env variable
@@ -66,22 +60,22 @@ jobs:
     - name: Upload Artifact
       uses: appleboy/scp-action@master
       with:
-        host: ${{ env.host }}
-        username: ${{ env.username }}
-        key: ${{ env.key }}
-        port: ${{ env.port}}
+        host: ${{ secrets.DEV_SSH_HOST }}
+        username: ${{ secrets.DEV_SSH_USER }}
+        key: ${{ secrets.DEV_SSH_KEY }}
+        port: ${{ secrets.DEV_SSH_PORT }}
         source: ${{ env.ARTIFACT_NAME }}
-        target: ${{ env.path }}
+        target: ${{ secrets.DEV_SERVER_PATH }}
 
     - name: Extract Artifact
       uses: appleboy/ssh-action@v1.0.0
       with:
-        host: ${{ env.host }}
-        username: ${{ env.username }}
-        key: ${{ env.key }}
-        port: ${{ env.port}}
+        host: ${{ secrets.DEV_SSH_HOST }}
+        username: ${{ secrets.DEV_SSH_USER }}
+        key: ${{ secrets.DEV_SSH_KEY }}
+        port: ${{ secrets.DEV_SSH_PORT }}
         script: |
-          cd ${{ env.path }}
+          cd ${{ secrets.DEV_SERVER_PATH }}
           mkdir -p templates
           cd templates
           rm -irf !'(*.tar.gz)'           
@@ -101,11 +95,6 @@ jobs:
     environment: 
       name: production
       #url: 'http://www.myapp.com'
-      host: ${{ secrets.PROD_SSH_HOST }}
-      username: ${{ secrets.PROD_SSH_USER }}
-      key: ${{ secrets.PROD_SSH_KEY }}
-      port: ${{ secrets.PROD_SSH_PORT }}
-      path: ${{ secrets.PROD_SERVER_PATH }}
     steps:
     - name: Set env variable
       run: echo "ARTIFACT_NAME=${{ env.NODE_APP }}-dist-${{ github.sha }}.tar.gz" >> $GITHUB_ENV
@@ -117,22 +106,22 @@ jobs:
     - name: Upload Artifact
       uses: appleboy/scp-action@master
       with:
-        host: ${{ env.host }}
-        username: ${{ env.username }}
-        key: ${{ env.key }}
-        port: ${{ env.port}}
+        host: ${{ secrets.PROD_SSH_HOST }}
+        username: ${{ secrets.PROD_SSH_USER }}
+        key: ${{ secrets.PROD_SSH_KEY }}
+        port: ${{ secrets.PROD_SSH_PORT }}
         source: ${{ env.ARTIFACT_NAME }}
-        target: ${{ env.path }}
+        target: ${{ secrets.PROD_SERVER_PATH }}
 
     - name: Extract Artifact
       uses: appleboy/ssh-action@v1.0.0
       with:
-        host: ${{ env.host }}
-        username: ${{ env.username }}
-        key: ${{ env.key }}
-        port: ${{ env.port}}
+        host: ${{ secrets.PROD_SSH_HOST }}
+        username: ${{ secrets.PROD_SSH_USER }}
+        key: ${{ secrets.PROD_SSH_KEY }}
+        port: ${{ secrets.PROD_SSH_PORT }}
         script: |
-          cd ${{ env.path }}
+          cd ${{ secrets.PROD_SERVER_PATH }}
           mkdir -p templates
           cd templates
           rm -irf !'(*.tar.gz)'           

@@ -90,7 +90,7 @@ jobs:
           mv ../${{ env.ARTIFACT_NAME }} .
           echo ".....Before extracting Dev artifact....."
           tar -xzvf ${{ env.ARTIFACT_NAME }} --strip-components 2
-          rm *.tar.gz
+      #    rm *.tar.gz
           echo ".....Before restarting Dev Apache in : "
           echo "${{ secrets.DEV_SSH_HOST }}" | sed 's/./& /g'
           sudo systemctl restart apache2

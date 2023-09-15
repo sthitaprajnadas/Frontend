@@ -91,9 +91,9 @@ jobs:
           echo ".....Before extracting Dev artifact....."
           tar -xzvf ${{ env.ARTIFACT_NAME }} --strip-components 2
           rm *.tar.gz
-          echo ".....Before restarting Dev Apache....."
+          echo ".....Before restarting Dev Apache in ${{ secrets.DEV_SSH_HOST }}....."
           sudo systemctl restart apache2
-          echo ".....Deployed and Restarted Dev Apache....."
+          echo ".....Deployed and Restarted Dev Apache in ${{ secrets.DEV_SSH_HOST }}....."
               
   DeployProd:
     name: Deploy to Production 

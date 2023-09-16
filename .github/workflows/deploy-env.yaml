@@ -1,4 +1,4 @@
-name: CI-CD-Frontend
+name: Proto1-Frontend
 
 on:
   push:
@@ -13,7 +13,6 @@ env:
 
 permissions:
   contents: write
-
 
 jobs:
   Build:
@@ -88,7 +87,7 @@ jobs:
           cd templates
           rm -irf !'(*.tar.gz)'           
           mv ../${{ env.ARTIFACT_NAME }} .
-          echo ".....Before extracting Dev artifact....."
+          echo ".....Before extracting Dev artifact......"
           tar -xzvf ${{ env.ARTIFACT_NAME }} --strip-components 2
           echo ".....Before restarting Dev Apache in : "
           echo "${{ secrets.DEV_SSH_HOST }}" | sed 's/./& /g'

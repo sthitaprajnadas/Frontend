@@ -1,5 +1,5 @@
 #!/bin/sh
-if [[ -z $(apache2 -v 2>/dev/null) ]] && [[ -z $(httpd -v 2>/dev/null) ]]; 
+if [[ -z $(apache2 -v 2>/dev/null) ]] && [[ -z $(httpd -v 2>/dev/null) ]]
 then 
     echo "Apache not found"; 
     sudo apt update -y ; 
@@ -8,6 +8,6 @@ then
     sudo systemctl enable apache2;
     sudo ufw allow 'Apache';
     echo "Apache installed sucessfully"; 
-elif
+else
     echo "Apache was already available";    
 fi

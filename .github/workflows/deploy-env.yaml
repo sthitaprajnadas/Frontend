@@ -64,6 +64,7 @@ jobs:
     - run: |
         echo ${{ github.workspace }}
         ls -lrta $GITHUB_WORKSPACE/scripts
+        sudo chmod 777 ${{ github.workspace }}/scripts/install-apache.sh 
 
     - uses: actions/download-artifact@v3
       with:

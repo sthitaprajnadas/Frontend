@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 if [[ -z $(apache2 -v 2>/dev/null) ]] && [[ -z $(httpd -v 2>/dev/null) ]]
 then 
     echo "Apache not found"; 

@@ -9,7 +9,7 @@ on:
 
 env:
   NODE_VERSION: '16.x'
-  NODE_APP: 'proto1-frontend'                # set this to the node version to use
+  NODE_APP: 'proto1-frontend'                
 
 permissions:
   contents: write
@@ -38,7 +38,6 @@ jobs:
     - name: Create deployment artifacts
       env:
         GITHUB_SHA: ${{ github.sha }}
-      #run: tar -czf "${GITHUB_SHA}"-dist.tar.gz ./dist/
       run: tar -czf ${{ env.ARTIFACT_NAME }} ./dist/
 
     - name: Store artifact for distribution
@@ -47,7 +46,7 @@ jobs:
         name: app-build
         path: ${{ env.ARTIFACT_NAME }}
 
-    - name: Store artifact for distribution
+    - name: Store apache install script for distribution
       uses: actions/upload-artifact@v3
       with:
         name: apache-script-install
@@ -65,12 +64,6 @@ jobs:
     steps:
     - name: Set env variable
       run: echo "ARTIFACT_NAME=${{ env.NODE_APP }}-dist-${{ github.sha }}.tar.gz" >> $GITHUB_ENV
-
-    - uses: actions/checkout@v3
-    - run: |
-        echo ${{ github.workspace }}
-        ls -lrta $GITHUB_WORKSPACE/scripts
-        sudo chmod 777 ${{ github.workspace }}/scripts/install-apache.sh 
 
     - uses: actions/download-artifact@v3
       with:
@@ -99,8 +92,7 @@ jobs:
         port: ${{ secrets.DEV_SSH_PORT }}
         script: |
           cd ${{ secrets.DEV_SERVER_PATH }}
-          ls -lrt
-          sh ./scripts/install-apache.sh
+          bash ./scripts/install-apache.sh
 
     - name: Upload Artifact
       uses: appleboy/scp-action@master
@@ -135,7 +127,7 @@ jobs:
               
   DeployProd:
     name: Deploy to Production 
-#    needs: [DeployDev]
+#   needs: [DeployDev]
     if: github.event.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: 
@@ -149,14 +141,30 @@ jobs:
       with:
         name: app-build
 
-    - name: Install apache if not installed already
+    - uses: actions/download-artifact@v3
+      with:
+        name: apache-script-install
+
+    - name: Upload Script
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.PROD_SSH_HOST }}
+        username: ${{ secrets.PROD_SSH_USER }}
+        key: ${{ secrets.PROD_SSH_KEY }}
+        port: ${{ secrets.PROD_SSH_PORT }}
+        source: ./scripts/install-apache.sh
+        target: ${{ secrets.PROD_SERVER_PATH }}
+
+    - name: Execute script
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.PROD_SSH_HOST }}
         username: ${{ secrets.PROD_SSH_USER }}
         key: ${{ secrets.PROD_SSH_KEY }}
         port: ${{ secrets.PROD_SSH_PORT }}
-        script-file: ${GITHUB_WORKSPACE}/scripts/install-apache.sh
+        script: |
+          cd ${{ secrets.PROD_SERVER_PATH }}
+          bash ./scripts/install-apache.sh
 
     - name: Upload Artifact
       uses: appleboy/scp-action@master
@@ -188,7 +196,6 @@ jobs:
           echo ".....Before restarting Apache server....."
           sudo systemctl restart apache2
           echo ".....Deployed and Restarted Apache....."
-
 
   # DeployStaging:
   #   name: Deploy to Staging 

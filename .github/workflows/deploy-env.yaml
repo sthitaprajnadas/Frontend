@@ -73,7 +73,7 @@ jobs:
         key: ${{ secrets.DEV_SSH_KEY }}
         port: ${{ secrets.DEV_SSH_PORT }}
         source: scripts/install-apache.sh
-        target: ${{ secrets.DEV_SERVER_PATH }}
+        target: /tmp
 
     - name: Execute script
       uses: appleboy/ssh-action@v1.0.0
@@ -83,8 +83,7 @@ jobs:
         key: ${{ secrets.DEV_SSH_KEY }}
         port: ${{ secrets.DEV_SSH_PORT }}
         script: |
-          cd ${{ secrets.DEV_SERVER_PATH }}
-          bash ${{ secrets.DEV_SERVER_PATH }}/scripts/install-apache.sh
+          bash /tmp/scripts/install-apache.sh
 
     - name: Upload Artifact
       uses: appleboy/scp-action@master
@@ -142,7 +141,7 @@ jobs:
         key: ${{ secrets.PROD_SSH_KEY }}
         port: ${{ secrets.PROD_SSH_PORT }}
         source: scripts/install-apache.sh
-        target: ${{ secrets.PROD_SERVER_PATH }}
+        target: /tmp/
 
     - name: Execute script
       uses: appleboy/ssh-action@v1.0.0
@@ -152,8 +151,7 @@ jobs:
         key: ${{ secrets.PROD_SSH_KEY }}
         port: ${{ secrets.PROD_SSH_PORT }}
         script: |
-          cd ${{ secrets.PROD_SERVER_PATH }}
-          bash ${{ secrets.DEV_SERVER_PATH }}/scripts/install-apache.sh
+          bash /tmp/scripts/install-apache.sh
 
     - name: Upload Artifact
       uses: appleboy/scp-action@master

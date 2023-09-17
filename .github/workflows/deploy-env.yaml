@@ -60,10 +60,6 @@ jobs:
     - name: Set env variable
       run: echo "ARTIFACT_NAME=${{ env.NODE_APP }}-dist-${{ github.sha }}.tar.gz" >> $GITHUB_ENV
 
-    - uses: actions/download-artifact@v3
-      with:
-        name: app-build
-
     - uses: actions/checkout@v3
     - name: Upload Script
       uses: appleboy/scp-action@master
@@ -85,6 +81,10 @@ jobs:
         script: |
           bash /tmp/scripts/install-apache.sh
 
+    - uses: actions/download-artifact@v3
+      with:
+        name: app-build
+        
     - name: Upload Artifact
       uses: appleboy/scp-action@master
       with:

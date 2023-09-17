@@ -83,7 +83,7 @@ jobs:
         port: ${{ secrets.DEV_SSH_PORT }}
         script: |
           cd ${{ secrets.DEV_SERVER_PATH }}
-          bash ./scripts/install-apache.sh
+          bash ${{ secrets.DEV_SERVER_PATH }}/scripts/install-apache.sh
 
     - name: Upload Artifact
       uses: appleboy/scp-action@master
@@ -151,7 +151,7 @@ jobs:
         port: ${{ secrets.PROD_SSH_PORT }}
         script: |
           cd ${{ secrets.PROD_SERVER_PATH }}
-          bash ./scripts/install-apache.sh
+          bash ${{ secrets.DEV_SERVER_PATH }}/scripts/install-apache.sh
 
     - name: Upload Artifact
       uses: appleboy/scp-action@master

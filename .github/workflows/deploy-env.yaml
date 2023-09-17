@@ -46,12 +46,7 @@ jobs:
         name: app-build
         path: ${{ env.ARTIFACT_NAME }}
 
-    - name: Store apache install script for distribution
-      uses: actions/upload-artifact@v3
-      with:
-        name: apache-script-install
-        path: ./scripts/install-apache.sh
-    
+
   DeployDev:
     name: Deploy to Dev 
 #   if: github.event_name == 'pull_request'
@@ -68,10 +63,6 @@ jobs:
     - uses: actions/download-artifact@v3
       with:
         name: app-build
-
-    - uses: actions/download-artifact@v3
-      with:
-        name: apache-script-install
 
     - name: Upload Script
       uses: appleboy/scp-action@master
@@ -140,10 +131,6 @@ jobs:
     - uses: actions/download-artifact@v3
       with:
         name: app-build
-
-    - uses: actions/download-artifact@v3
-      with:
-        name: apache-script-install
 
     - name: Upload Script
       uses: appleboy/scp-action@master

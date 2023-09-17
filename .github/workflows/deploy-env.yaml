@@ -46,6 +46,12 @@ jobs:
       with:
         name: app-build
         path: ${{ env.ARTIFACT_NAME }}
+
+    - name: Store artifact for distribution
+      uses: actions/upload-artifact@v3
+      with:
+        name: apache-script-install
+        path: ./scripts/install-apache.sh
     
   DeployDev:
     name: Deploy to Dev 
@@ -70,14 +76,31 @@ jobs:
       with:
         name: app-build
 
-    - name: Install apache if not installed already
+    - uses: actions/download-artifact@v3
+      with:
+        name: apache-script-install
+
+    - name: Upload Script
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.DEV_SSH_HOST }}
+        username: ${{ secrets.DEV_SSH_USER }}
+        key: ${{ secrets.DEV_SSH_KEY }}
+        port: ${{ secrets.DEV_SSH_PORT }}
+        source: ./scripts/install-apache.sh
+        target: ${{ secrets.DEV_SERVER_PATH }}
+
+    - name: Execute script
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.DEV_SSH_HOST }}
         username: ${{ secrets.DEV_SSH_USER }}
         key: ${{ secrets.DEV_SSH_KEY }}
         port: ${{ secrets.DEV_SSH_PORT }}
-        script: sudo sh ${{ github.workspace }}/scripts/install-apache.sh      
+        script: |
+          cd ${{ secrets.DEV_SERVER_PATH }}
+          ls -lrt
+          sh ./install-apache.sh
 
     - name: Upload Artifact
       uses: appleboy/scp-action@master

@@ -100,7 +100,7 @@ jobs:
         script: |
           cd ${{ secrets.DEV_SERVER_PATH }}
           ls -lrt
-          sh ./install-apache.sh
+          sh ./scripts/install-apache.sh
 
     - name: Upload Artifact
       uses: appleboy/scp-action@master

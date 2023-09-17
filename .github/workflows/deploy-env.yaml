@@ -57,8 +57,6 @@ jobs:
       name: dev
       #url: 'http://dev.myapp.com'
     steps:
-    
-
     - name: Set env variable
       run: echo "ARTIFACT_NAME=${{ env.NODE_APP }}-dist-${{ github.sha }}.tar.gz" >> $GITHUB_ENV
 

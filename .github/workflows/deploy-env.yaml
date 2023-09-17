@@ -60,6 +60,11 @@ jobs:
     - name: Set env variable
       run: echo "ARTIFACT_NAME=${{ env.NODE_APP }}-dist-${{ github.sha }}.tar.gz" >> $GITHUB_ENV
 
+    - uses: actions/checkout@v3
+    - run: |
+        echo ${{ github.workspace }}
+        echo $GITHUB_WORKSPACE
+        
     - uses: actions/download-artifact@v3
       with:
         name: app-build
@@ -71,7 +76,7 @@ jobs:
         username: ${{ secrets.DEV_SSH_USER }}
         key: ${{ secrets.DEV_SSH_KEY }}
         port: ${{ secrets.DEV_SSH_PORT }}
-        script-file: scripts/install-apache.sh      
+        script-file: ${GITHUB_WORKSPACE}/scripts/install-apache.sh      
 
     - name: Read script contents
       id: apache-install-script

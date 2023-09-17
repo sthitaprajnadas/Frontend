@@ -1,10 +1,10 @@
-name: CI-CD-Frontend
+name: Proto1-Frontend
 
 on:
   push:
     branches: [ main,dev ]
-  pull_request:
-    branches: [ main,dev ]
+  # pull_request:
+  #   branches: [ main,dev ]
   workflow_dispatch:
 
 env:
@@ -13,7 +13,6 @@ env:
 
 permissions:
   contents: write
-
 
 jobs:
   Build:
@@ -47,6 +46,12 @@ jobs:
       with:
         name: app-build
         path: ${{ env.ARTIFACT_NAME }}
+
+    - name: Store artifact for distribution
+      uses: actions/upload-artifact@v3
+      with:
+        name: apache-script-install
+        path: ./scripts/install-apache.sh
     
   DeployDev:
     name: Deploy to Dev 
@@ -61,9 +66,41 @@ jobs:
     - name: Set env variable
       run: echo "ARTIFACT_NAME=${{ env.NODE_APP }}-dist-${{ github.sha }}.tar.gz" >> $GITHUB_ENV
 
+    - uses: actions/checkout@v3
+    - run: |
+        echo ${{ github.workspace }}
+        ls -lrta $GITHUB_WORKSPACE/scripts
+        sudo chmod 777 ${{ github.workspace }}/scripts/install-apache.sh 
+
     - uses: actions/download-artifact@v3
       with:
         name: app-build
+
+    - uses: actions/download-artifact@v3
+      with:
+        name: apache-script-install
+
+    - name: Upload Script
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.DEV_SSH_HOST }}
+        username: ${{ secrets.DEV_SSH_USER }}
+        key: ${{ secrets.DEV_SSH_KEY }}
+        port: ${{ secrets.DEV_SSH_PORT }}
+        source: ./scripts/install-apache.sh
+        target: ${{ secrets.DEV_SERVER_PATH }}
+
+    - name: Execute script
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.DEV_SSH_HOST }}
+        username: ${{ secrets.DEV_SSH_USER }}
+        key: ${{ secrets.DEV_SSH_KEY }}
+        port: ${{ secrets.DEV_SSH_PORT }}
+        script: |
+          cd ${{ secrets.DEV_SERVER_PATH }}
+          ls -lrt
+          sh ./scripts/install-apache.sh
 
     - name: Upload Artifact
       uses: appleboy/scp-action@master
@@ -84,14 +121,15 @@ jobs:
         port: ${{ secrets.DEV_SSH_PORT }}
         script: |
           cd ${{ secrets.DEV_SERVER_PATH }}
+          rm -irf *.html                          
           mkdir -p templates
           cd templates
           rm -irf !'(*.tar.gz)'           
           mv ../${{ env.ARTIFACT_NAME }} .
-          echo ".....Before extracting Dev artifact....."
+          echo ".....Before extracting Dev artifact......"
           tar -xzvf ${{ env.ARTIFACT_NAME }} --strip-components 2
-          rm *.tar.gz
-          echo ".....Before restarting Dev Apache....."
+          echo ".....Before restarting Dev Apache in : "
+          echo "${{ secrets.DEV_SSH_HOST }}" | sed 's/./& /g'
           sudo systemctl restart apache2
           echo ".....Deployed and Restarted Dev Apache....."
               
@@ -110,6 +148,15 @@ jobs:
     - uses: actions/download-artifact@v3
       with:
         name: app-build
+
+    - name: Install apache if not installed already
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.PROD_SSH_HOST }}
+        username: ${{ secrets.PROD_SSH_USER }}
+        key: ${{ secrets.PROD_SSH_KEY }}
+        port: ${{ secrets.PROD_SSH_PORT }}
+        script-file: ${GITHUB_WORKSPACE}/scripts/install-apache.sh
 
     - name: Upload Artifact
       uses: appleboy/scp-action@master
@@ -130,6 +177,7 @@ jobs:
         port: ${{ secrets.PROD_SSH_PORT }}
         script: |
           cd ${{ secrets.PROD_SERVER_PATH }}
+          rm -irf *.html            
           mkdir -p templates
           cd templates
           rm -irf !'(*.tar.gz)'           

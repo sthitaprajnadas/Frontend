@@ -71,7 +71,7 @@ jobs:
         username: ${{ secrets.DEV_SSH_USER }}
         key: ${{ secrets.DEV_SSH_KEY }}
         port: ${{ secrets.DEV_SSH_PORT }}
-        script: sh ../../scripts/install-apache.sh      
+        script: sh scripts/install-apache.sh      
  
 
     - name: Upload Artifact

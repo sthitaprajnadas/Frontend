@@ -9,7 +9,7 @@ on:
 
 env:
   NODE_VERSION: '16.x'
-  NODE_APP: 'proto1-frontend'                
+  NODE_APP: 'Proto1-Frontend'                
 
 permissions:
   contents: write

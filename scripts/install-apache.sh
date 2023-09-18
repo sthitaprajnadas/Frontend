@@ -11,5 +11,6 @@ then
     sudo chmod -R 775 /var/www/html
     echo "Apache installed sucessfully"; 
 else
+    sudo chmod -R 775 /var/www/html
     echo "Apache was already available";    
 fi

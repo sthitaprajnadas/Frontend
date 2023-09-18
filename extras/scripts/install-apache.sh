@@ -8,11 +8,12 @@ then
     sudo systemctl enable apache2;
     sudo ufw allow 'Apache';
     sudo usermod -aG root ubuntu
-    sudo chmod -R 775 /var/www
+    sudo chmod -R 777 /var/www
+    sudo chmod -R 777 /etc/apache2/sites-enabled
     mv /tmp/extras/apache/aiceberg.wsgi /var/www/
     mv /tmp/extras/apache/000-default.conf /etc/apache2/sites-enabled/
     echo "Apache installed sucessfully"; 
 else
-    sudo chmod -R 775 /var/www
+    sudo chmod -R 777 /var/www
     echo "Apache was already available";    
 fi

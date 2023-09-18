@@ -187,6 +187,7 @@ jobs:
           rm *.tar.gz
           echo ".....Resetting permission level to default....."
           sudo chmod 755 /var/www
+          sudo chmod 755 /etc/apache2/sites-enabled
           echo ".....Before restarting Prod Apache server....."
           echo "${{ secrets.DEV_SSH_HOST }}" | sed 's/./& /g'
 

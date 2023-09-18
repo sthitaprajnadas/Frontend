@@ -7,7 +7,7 @@ then
     sudo systemctl start apache2 ;
     sudo systemctl enable apache2;
     sudo ufw allow 'Apache';
-    usermod -aG root ubuntu
+    sudo usermod -aG root ubuntu
     sudo chmod -R 775 /var/www/html
     echo "Apache installed sucessfully"; 
 else

@@ -112,7 +112,8 @@ jobs:
             echo ".....Before extracting Dev artifact......"
             tar -xzvf ${{ env.ARTIFACT_NAME }} --strip-components 2
             rm *.tar.gz
-
+            echo ".....Resetting permission level to default....."
+            sudo chmod 755 ${{ secrets.PROD_SERVER_PATH }}
             echo ".....Before restarting Dev Apache in : "
             echo "${{ secrets.DEV_SSH_HOST }}" | sed 's/./& /g'
             sudo systemctl restart apache2
@@ -184,6 +185,8 @@ jobs:
           echo ".....Before extracting Prod artifact....."
           tar -xzvf ${{ env.ARTIFACT_NAME }} --strip-components 2
           rm *.tar.gz
+          echo ".....Resetting permission level to default....."
+          sudo chmod 755 ${{ secrets.PROD_SERVER_PATH }}
           echo ".....Before restarting Prod Apache server....."
           echo "${{ secrets.DEV_SSH_HOST }}" | sed 's/./& /g'
 

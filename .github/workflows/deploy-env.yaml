@@ -1,5 +1,4 @@
 name: Proto1-Frontend
-
 on:
   push:
     branches: [ main,dev ]
